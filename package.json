@@ -1,0 +1,45 @@
+{
+  "name": "@prelude/radix-trie",
+  "version": "0.0.0",
+  "description": "Radix trie module.",
+  "type": "module",
+  "main": "./cjs/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test",
+    "preversion": "make test",
+    "postversion": "make postversion"
+  },
+  "keywords": [
+    "prelude",
+    "std",
+    "lib",
+    "stdlib",
+    "library"
+  ],
+  "author": "Mirek Rusin (https://github.com/mirek)",
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/node16": "1.0.3",
+    "@types/jest": "28.1.6",
+    "eslint": "8.20.0",
+    "jest": "28.1.3",
+    "typescript": "4.7.4"
+  },
+  "module": "./mjs/index.js",
+  "exports": {
+    ".": {
+      "import": "./mjs/index.js",
+      "require": "./cjs/index.js"
+    },
+    "./*.js": {
+      "import": "./mjs/*.js",
+      "require": "./cjs/*.js"
+    },
+    "./*": {
+      "require": "./cjs/*.js"
+    }
+  }
+}
