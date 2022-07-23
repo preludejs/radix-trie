@@ -79,7 +79,7 @@ export const empty =
     ({})
 
 export const of =
-  (values: string[] = []): t => {
+  (values: Iterable<string> = []): t => {
     const trie = empty()
     for (const value of values) {
       insert(trie, value)
@@ -87,9 +87,8 @@ export const of =
     return trie
   }
 
-/** @yields trie entries which are input's prefixes from the shortest to the longest. */
-export const prefixes =
-  function* (trie: t, input: string, offset = 0) {
+export const prefixLengths =
+  function* (trie: t, input: string, offset = 0): Generator<number> {
     const char = input[offset]
     const edge = trie[char]
     if (!edge) {
@@ -98,21 +97,55 @@ export const prefixes =
     const n = edge.P.length
     if (shared(edge.P, input, offset) === n) {
       if (edge.E) {
-        yield edge.P
+        yield n
       }
       if (edge.N) {
-        for (const prefix of prefixes(edge.N, input, offset + n)) {
-          yield edge.P + prefix
+        for (const prefixLength of prefixLengths(edge.N, input, offset + n)) {
+          yield n + prefixLength
         }
       }
     }
   }
 
-export const longestPrefix =
-  (trie: t, input: string) => {
-    let longest: undefined | string
-    for (const prefix of prefixes(trie, input)) {
-      longest = prefix
+/** @yields trie entries which are input's prefixes from the shortest to the longest. */
+export const prefixes =
+  function* (trie: t, input: string, offset = 0): Generator<string> {
+    for (const prefixLength of prefixLengths(trie, input, offset)) {
+      yield input.slice(offset, offset + prefixLength)
     }
-    return longest
+  }
+
+export const firstPrefixLength =
+  (trie: t, input: string, offset = 0) => {
+    for (const prefixLength of prefixLengths(trie, input, offset)) {
+      return prefixLength
+    }
+    return 0
+  }
+
+export const firstPrefix =
+  (trie: t, input: string, offset = 0) => {
+    const firstLength = firstPrefixLength(trie, input, offset)
+    return firstLength === 0 ?
+      undefined :
+      input.slice(offset, offset + firstLength)
+  }
+
+export const longestPrefixLength =
+  (trie: t, input: string, offset = 0) => {
+    let longestLength = 0
+    for (const prefixLength of prefixLengths(trie, input, offset)) {
+      if (prefixLength > longestLength) {
+        longestLength = prefixLength
+      }
+    }
+    return longestLength
+  }
+
+export const longestPrefix =
+  (trie: t, input: string, offset = 0) => {
+    const length = longestPrefixLength(trie, input, offset)
+    return length === 0 ?
+      undefined :
+      input.slice(offset, offset + length)
   }
