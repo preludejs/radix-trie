@@ -151,7 +151,7 @@ export const longestPrefix =
   }
 
 export const has =
-  (trie: t, input: string, offset = 0) => {
+  (trie: t, input: string, offset = 0): boolean => {
     const char = input[offset]
     const edge = trie[char]
     if (!edge) {
