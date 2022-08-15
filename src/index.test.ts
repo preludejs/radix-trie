@@ -56,3 +56,21 @@ test('longest prefix', () => {
   expect(RadixTrie.longestPrefix(trie, 'foobarbaz')).toEqual('foobar')
   expect(RadixTrie.longestPrefix(trie, 'food')).toEqual('foo')
 })
+
+test('has', () => {
+  const trie = RadixTrie.of([
+    'foo',
+    'foobar',
+    'foobaz'
+  ])
+  expect(RadixTrie.has(trie, 'foo')).toBe(true)
+  expect(RadixTrie.has(trie, 'foobar')).toBe(true)
+  expect(RadixTrie.has(trie, 'foobaz')).toBe(true)
+  expect(RadixTrie.has(trie, '')).toBe(false)
+  expect(RadixTrie.has(trie, 'x')).toBe(false)
+  expect(RadixTrie.has(trie, 'f')).toBe(false)
+  expect(RadixTrie.has(trie, 'fo')).toBe(false)
+  expect(RadixTrie.has(trie, 'foob')).toBe(false)
+  expect(RadixTrie.has(trie, 'fooba')).toBe(false)
+  expect(RadixTrie.has(trie, 'foobax')).toBe(false)
+})

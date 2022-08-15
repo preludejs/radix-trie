@@ -149,3 +149,20 @@ export const longestPrefix =
       undefined :
       input.slice(offset, offset + length)
   }
+
+export const has =
+  (trie: t, input: string, offset = 0) => {
+    const char = input[offset]
+    const edge = trie[char]
+    if (!edge) {
+      return false
+    }
+    const n = edge.P.length
+    return shared(edge.P, input, offset) === n ?
+      input.length === offset + n ?
+        edge.E :
+        edge.N ?
+          has(edge.N, input, offset + n) :
+          false :
+        false
+  }
