@@ -1,6 +1,6 @@
 {
   "name": "@prelude/radix-trie",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Radix trie module.",
   "type": "module",
   "main": "./cjs/index.js",
