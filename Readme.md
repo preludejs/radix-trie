@@ -1,3 +1,17 @@
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=bugs)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=coverage)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=preludejs_radix-trie&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=preludejs_radix-trie)
+
+---
+
 # Radix trie module
 
 # Usage
