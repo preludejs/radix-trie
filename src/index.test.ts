@@ -74,3 +74,8 @@ test('has', () => {
   expect(RadixTrie.has(trie, 'fooba')).toBe(false)
   expect(RadixTrie.has(trie, 'foobax')).toBe(false)
 })
+
+test('empty strings', () => {
+  const trie = RadixTrie.of([''])
+  expect(RadixTrie.has(trie, '')).toBe(true)
+})
