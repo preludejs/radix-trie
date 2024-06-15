@@ -1,21 +1,18 @@
 
-export type Edge = {
+/** Radix trie. */
+export type t =
+  Record<string, undefined | {
 
-  /** End of string. */
-  E: boolean,
+    /** End of string. */
+    E: boolean,
 
-  /** Prefix. */
-  P: string,
+    /** Prefix. */
+    P: string,
 
-  /** Node. */
-  N?: RadixTrie
+    /** Node. */
+    N?: t
 
-}
-
-export type RadixTrie =
-  Record<string, undefined | Edge>
-
-export type t = RadixTrie
+  }>
 
 /** @returns shared prefix length. */
 const shared =
@@ -30,11 +27,11 @@ const shared =
   }
 
 export const insert =
-  (trie: t, value: string) => {
+  (mutableTrie: t, value: string) => {
     const char = value[0]
-    const edge = trie[char]
+    const edge = mutableTrie[char]
     if (!edge) {
-      trie[char] = { P: value, E: true }
+      mutableTrie[char] = { P: value, E: true }
       return
     }
     const n = shared(edge.P, value)
@@ -62,16 +59,18 @@ export const insert =
       return
     }
 
-    const prefix = edge.P.slice(0, n)
-    const suffix = edge.P.slice(n)
-    const suffixChar = suffix[0]
-
     // Split.
-    edge.N = { [suffixChar]: { P: suffix, N: edge.N, E: edge.E } }
-    edge.P = prefix
-    edge.E = false
+    {
+      const prefix = edge.P.slice(0, n)
+      const suffix = edge.P.slice(n)
+      const suffixChar = suffix[0]
 
-    insert(edge.N, value.slice(n))
+      edge.N = { [suffixChar]: { P: suffix, N: edge.N, E: edge.E } }
+      edge.P = prefix
+      edge.E = false
+
+      insert(edge.N, value.slice(n))
+    }
   }
 
 export const empty =
@@ -158,11 +157,14 @@ export const has =
       return false
     }
     const n = edge.P.length
-    return shared(edge.P, input, offset) === n ?
-      input.length === offset + n ?
-        edge.E :
-        edge.N ?
-          has(edge.N, input, offset + n) :
-          false :
-        false
+    if (shared(edge.P, input, offset) !== n) {
+      return false
+    }
+    if (input.length === offset + n) {
+      return edge.E
+    }
+    if (!edge.N) {
+      return false
+    }
+    return has(edge.N, input, offset + n)
   }

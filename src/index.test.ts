@@ -4,7 +4,7 @@ test('insert', () => {
   const trie = RadixTrie.empty()
   RadixTrie.insert(trie, 'foo')
   expect(trie).toEqual({
-    f: { P: 'foo', E: true },
+    f: { P: 'foo', E: true }
   })
   RadixTrie.insert(trie, 'foobar')
   expect(trie).toEqual({
@@ -76,6 +76,6 @@ test('has', () => {
 })
 
 test('empty strings', () => {
-  const trie = RadixTrie.of([''])
+  const trie = RadixTrie.of([ '' ])
   expect(RadixTrie.has(trie, '')).toBe(true)
 })
