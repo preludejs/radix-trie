@@ -33,6 +33,15 @@ const shared =
  */
 export const insert =
   (mutableTrie: t, value: string) => {
+
+    // Special case for empty string
+    if (value.length === 0) {
+      if (mutableTrie[''] == null) {
+        mutableTrie[''] = { P: '', E: true }
+      }
+      return
+    }
+
     const char = value[0]
     const edge = mutableTrie[char]
     if (!edge) {
@@ -72,7 +81,10 @@ export const insert =
 
       edge.N = { [suffixChar]: { P: suffix, N: edge.N, E: edge.E } }
       edge.P = prefix
-      edge.E = false
+
+      // If the prefix being created is the same as the value being inserted, then mark it as an end of string.
+      // Otherwise, keep it as not an end of string.
+      edge.E = (prefix === value)
 
       insert(edge.N, value.slice(n))
     }
@@ -109,6 +121,17 @@ export const of =
  */
 export const prefixLengths =
   function* (trie: t, input: string, offset = 0): Generator<number> {
+
+    // Special case for empty string as a prefix.
+    if (trie['']?.E === true && offset <= input.length) {
+      yield 0
+    }
+
+    // If we're at the end of the input, no more prefixes to find.
+    if (offset >= input.length) {
+      return
+    }
+
     const char = input[offset]
     const edge = trie[char]
     if (!edge) {
@@ -214,6 +237,12 @@ export const longestPrefix =
  */
 export const has =
   (trie: t, input: string, offset = 0): boolean => {
+
+    // Special case for empty string.
+    if (input.length === offset) {
+      return trie['']?.E === true
+    }
+
     const char = input[offset]
     const edge = trie[char]
     if (!edge) {

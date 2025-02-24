@@ -79,3 +79,47 @@ test('empty strings', () => {
   const trie = RadixTrie.of([ '' ])
   expect(RadixTrie.has(trie, '')).toBe(true)
 })
+
+test('mixed empty and non-empty strings', () => {
+  // Test handling of empty strings alongside non-empty strings
+  const trie = RadixTrie.empty()
+
+  // First insert empty string
+  RadixTrie.insert(trie, '')
+  expect(RadixTrie.has(trie, '')).toBe(true)
+
+  // Then insert non-empty strings
+  RadixTrie.insert(trie, 'a')
+  RadixTrie.insert(trie, 'ab')
+
+  // All strings should be preserved in the trie
+  expect(RadixTrie.has(trie, '')).toBe(true)
+  expect(RadixTrie.has(trie, 'a')).toBe(true)
+  expect(RadixTrie.has(trie, 'ab')).toBe(true)
+
+  // Create trie in reverse order
+  const trie2 = RadixTrie.of([ 'ab', 'a', '' ])
+
+  expect(RadixTrie.has(trie2, '')).toBe(true)
+  expect(RadixTrie.has(trie2, 'a')).toBe(true)
+  expect(RadixTrie.has(trie2, 'ab')).toBe(true)
+})
+
+test('preserve prefix as valid word when splitting', () => {
+
+  // Test that when a node is split, if the prefix itself was a valid word (e=true),
+  // that information is preserved after the split
+  const trie = RadixTrie.empty()
+
+  // First insert "test" into the trie
+  RadixTrie.insert(trie, 'test')
+  expect(RadixTrie.has(trie, 'test')).toBe(true)
+
+  // Then insert "testing" which shares the prefix "test"
+  // This should cause a split at the node containing "test"
+  RadixTrie.insert(trie, 'testing')
+
+  // After the split, "test" should still be a valid word in the trie
+  expect(RadixTrie.has(trie, 'test')).toBe(true)
+  expect(RadixTrie.has(trie, 'testing')).toBe(true)
+})
