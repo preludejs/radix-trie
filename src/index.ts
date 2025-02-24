@@ -127,6 +127,14 @@ export const prefixLengths =
       yield 0
     }
 
+    if (offset < 0) {
+      throw new Error(`Expected positive offset, got ${offset}.`)
+    }
+
+    if (!Number.isSafeInteger(offset)) {
+      throw new Error(`Expected safe integer offset, got ${offset}.`)
+    }
+
     // If we're at the end of the input, no more prefixes to find.
     if (offset >= input.length) {
       return
@@ -151,8 +159,7 @@ export const prefixLengths =
   }
 
 /**
- * Yields all prefixes of the input string that exist in the trie.
- * Yields prefixes from the shortest to the longest.
+ * Yields all prefixes of the input string that exist in the trie (from the shortest to the longest).
  * @param trie - The radix trie to search in
  * @param input - The string to find prefixes for
  * @param offset - The starting offset in the input string
@@ -228,21 +235,9 @@ export const longestPrefix =
       input.slice(offset, offset + length)
   }
 
-/**
- * Checks if a string exists in the trie.
- * @param trie - The radix trie to search in
- * @param input - The string to check for
- * @param offset - The starting offset in the input string
- * @returns True if the string exists in the trie, false otherwise
- */
-export const has =
+/** Internal has implementation. */
+const _has =
   (trie: t, input: string, offset = 0): boolean => {
-
-    // Special case for empty string.
-    if (input.length === offset) {
-      return trie['']?.E === true
-    }
-
     const char = input[offset]
     const edge = trie[char]
     if (!edge) {
@@ -258,5 +253,31 @@ export const has =
     if (!edge.N) {
       return false
     }
-    return has(edge.N, input, offset + n)
+    return _has(edge.N, input, offset + n)
+  }
+
+/**
+ * Checks if a string exists in the trie.
+ * @param trie - The radix trie to search in
+ * @param input - The string to check for
+ * @param offset - The starting offset in the input string
+ * @returns True if the string exists in the trie, false otherwise
+ */
+export const has =
+  (trie: t, input: string, offset = 0): boolean => {
+
+    if (offset < 0) {
+      throw new Error(`Expected positive offset, got ${offset}.`)
+    }
+
+    if (!Number.isSafeInteger(offset)) {
+      throw new Error(`Expected safe integer offset, got ${offset}.`)
+    }
+
+    // Special case for empty string.
+    if (offset >= input.length) {
+      return trie['']?.E === true
+    }
+
+    return _has(trie, input, offset)
   }
