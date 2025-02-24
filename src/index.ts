@@ -26,6 +26,11 @@ const shared =
     return n
   }
 
+/**
+ * Inserts a string into a radix trie.
+ * @param mutableTrie - The trie to modify
+ * @param value - The string to insert
+ */
 export const insert =
   (mutableTrie: t, value: string) => {
     const char = value[0]
@@ -73,10 +78,19 @@ export const insert =
     }
   }
 
+/**
+ * Creates an empty radix trie.
+ * @returns A new empty radix trie
+ */
 export const empty =
   (): t =>
     ({})
 
+/**
+ * Creates a radix trie from a collection of strings.
+ * @param values - The strings to insert into the trie
+ * @returns A new radix trie containing the provided values
+ */
 export const of =
   (values: Iterable<string> = []): t => {
     const trie = empty()
@@ -86,6 +100,13 @@ export const of =
     return trie
   }
 
+/**
+ * Yields the lengths of all prefixes of the input string that exist in the trie.
+ * @param trie - The radix trie to search in
+ * @param input - The string to find prefixes for
+ * @param offset - The starting offset in the input string
+ * @yields The lengths of all prefixes found in the trie
+ */
 export const prefixLengths =
   function* (trie: t, input: string, offset = 0): Generator<number> {
     const char = input[offset]
@@ -106,7 +127,14 @@ export const prefixLengths =
     }
   }
 
-/** @yields trie entries which are input's prefixes from the shortest to the longest. */
+/**
+ * Yields all prefixes of the input string that exist in the trie.
+ * Yields prefixes from the shortest to the longest.
+ * @param trie - The radix trie to search in
+ * @param input - The string to find prefixes for
+ * @param offset - The starting offset in the input string
+ * @yields The prefixes found in the trie from shortest to longest
+ */
 export const prefixes =
   function* (trie: t, input: string, offset = 0): Generator<string> {
     for (const prefixLength of prefixLengths(trie, input, offset)) {
@@ -114,6 +142,13 @@ export const prefixes =
     }
   }
 
+/**
+ * Returns the length of the first prefix of the input string found in the trie.
+ * @param trie - The radix trie to search in
+ * @param input - The string to find a prefix for
+ * @param offset - The starting offset in the input string
+ * @returns The length of the first prefix found, or 0 if no prefix exists
+ */
 export const firstPrefixLength =
   (trie: t, input: string, offset = 0) => {
     for (const prefixLength of prefixLengths(trie, input, offset)) {
@@ -122,6 +157,13 @@ export const firstPrefixLength =
     return 0
   }
 
+/**
+ * Returns the first prefix of the input string found in the trie.
+ * @param trie - The radix trie to search in
+ * @param input - The string to find a prefix for
+ * @param offset - The starting offset in the input string
+ * @returns The first prefix found, or undefined if no prefix exists
+ */
 export const firstPrefix =
   (trie: t, input: string, offset = 0) => {
     const firstLength = firstPrefixLength(trie, input, offset)
@@ -130,6 +172,13 @@ export const firstPrefix =
       input.slice(offset, offset + firstLength)
   }
 
+/**
+ * Returns the length of the longest prefix of the input string found in the trie.
+ * @param trie - The radix trie to search in
+ * @param input - The string to find a longest prefix for
+ * @param offset - The starting offset in the input string
+ * @returns The length of the longest prefix found, or 0 if no prefix exists
+ */
 export const longestPrefixLength =
   (trie: t, input: string, offset = 0) => {
     let longestLength = 0
@@ -141,6 +190,13 @@ export const longestPrefixLength =
     return longestLength
   }
 
+/**
+ * Returns the longest prefix of the input string found in the trie.
+ * @param trie - The radix trie to search in
+ * @param input - The string to find a longest prefix for
+ * @param offset - The starting offset in the input string
+ * @returns The longest prefix found, or undefined if no prefix exists
+ */
 export const longestPrefix =
   (trie: t, input: string, offset = 0) => {
     const length = longestPrefixLength(trie, input, offset)
@@ -149,6 +205,13 @@ export const longestPrefix =
       input.slice(offset, offset + length)
   }
 
+/**
+ * Checks if a string exists in the trie.
+ * @param trie - The radix trie to search in
+ * @param input - The string to check for
+ * @param offset - The starting offset in the input string
+ * @returns True if the string exists in the trie, false otherwise
+ */
 export const has =
   (trie: t, input: string, offset = 0): boolean => {
     const char = input[offset]
